@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Rutas</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <center><h1>Rutas</h1></center>
+        <br>
+        <!-- Formulario para agregar ciudades -->
+        <form method="POST" action="/">
+            <h2>Agregar ciudad</h2>
+            <br>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="ciudad">Ciudad:</label>
+                    <input type="text" class="form-control" id="ciudad" name="ciudad" required>
+                </div>
+                <div class="form-group col-md-4">
+                    
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="pedido">Pedido:</label>
+                    <input type="number" class="form-control" id="pedido" name="pedido" required>
+                </div>
+               
+            </div>
+            <div  class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="latitud">Latitud:</label>
+                    <input type="number" step="any" class="form-control" id="latitud" name="latitud" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="longitud">Longitud:</label>
+                    <input type="number" step="any" class="form-control" id="longitud" name="longitud" required>
+                </div>
+            </div>
+            
+           <center><button type="submit" class="btn btn-outline-primary">Agregar Ciudad</button></center>
+            
+        </form>
+
+        <!-- Formulario para ingresar rutas -->
+        <form id="rutas-form" method="POST" action="/">
+            <br>
+            <h2>Ingresar Rutas</h2>
+            <br>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="rutas">Rutas (separar por comas):</label>
+                    <input type="text" class="form-control" id="rutas" name="rutas" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <button type="submit" class="btn btn-outline-secondary">Calcular Rutas</button>
+                </div>
+            </div>
+           
+           
+        </form>
+
+        <!-- Resultados de rutas -->
+        <div id="resultados" class="mt-5">  
+            <h2>Mejores Rutas:</h2>
+            <ul id="rutas-list" class="list-group mt-3">
+                <!-- Aquí se mostrarán las rutas calculadas -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Manejar el envío del formulario de rutas con AJAX
+            $('#rutas-form').submit(function(event) {
+                event.preventDefault();  // Evitar que se recargue la página
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/',
+                    data: $('#rutas-form').serialize(),
+                    success: function(response) {
+                        // Limpiar lista de rutas
+                        $('#rutas-list').empty();
+
+                        // Agregar las rutas calculadas a la lista
+                        $.each(response.rutas_calculadas, function(index, ruta) {
+                            $('#rutas-list').append('<li class="list-group-item">Ruta: ' + ruta + '</li>');
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
